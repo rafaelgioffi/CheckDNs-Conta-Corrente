@@ -50,13 +50,16 @@ namespace CheckDNs___Conta_Corrente
                         }
                         else
                         {
-                            DNs.Add(actualDn[0]);
+                            DNs.Add(verifingDN);
                             Quants.Add(actualQuant);
-                            actualQuant = 0;
+                            actualQuant = 1;
                         }
                         verifingDN = actualDn[0];                        
                     }
-                    dataGridView1.Rows.Add(DNs, Quants);
+                    for (int i = 0;i < DNs.Count; i++)
+                    {
+                        dataGridView1.Rows.Add(DNs[i], Quants[i]);
+                    }
                 }
             }
             catch (Exception ex) {

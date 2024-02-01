@@ -59,10 +59,11 @@
             this.colQuant});
             this.dataGridView1.Location = new System.Drawing.Point(3, 41);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.ReadOnly = true;
             this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(205, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(205, 708);
             this.dataGridView1.TabIndex = 1;
             // 
             // colDN
@@ -89,11 +90,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(213, 450);
+            this.ClientSize = new System.Drawing.Size(214, 761);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnCheck);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "CheckDNs - Conta Corrente";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
