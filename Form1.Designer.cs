@@ -33,6 +33,7 @@
             this.colDN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQuant = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.opFile = new System.Windows.Forms.OpenFileDialog();
+            this.lblDuplicados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,11 +87,21 @@
             // 
             this.opFile.FileName = "openFileDialog1";
             // 
+            // lblDuplicados
+            // 
+            this.lblDuplicados.AutoSize = true;
+            this.lblDuplicados.ForeColor = System.Drawing.Color.Red;
+            this.lblDuplicados.Location = new System.Drawing.Point(214, 41);
+            this.lblDuplicados.Name = "lblDuplicados";
+            this.lblDuplicados.Size = new System.Drawing.Size(0, 13);
+            this.lblDuplicados.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(214, 761);
+            this.ClientSize = new System.Drawing.Size(500, 761);
+            this.Controls.Add(this.lblDuplicados);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnCheck);
             this.Name = "Form1";
@@ -108,6 +119,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDN;
         private System.Windows.Forms.DataGridViewTextBoxColumn colQuant;
         private System.Windows.Forms.OpenFileDialog opFile;
+        private System.Windows.Forms.Label lblDuplicados;
     }
 }
 

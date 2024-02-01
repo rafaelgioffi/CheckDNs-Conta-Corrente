@@ -16,10 +16,15 @@ namespace CheckDNs___Conta_Corrente
         string fileName;
         string[] allFile = { };
         string[] actualDn;
+        string[] DnJ;
+        string[] DnK;
         string verifingDN;
         int actualQuant = 0;
+        int inicial = 0;
+        int final = 0;
         List<string> DNs = new List<string>();
         List<int> Quants = new List<int>();
+        List<string> Duplicadas = new List<string>();
         public Form1()
         {
             InitializeComponent();            
@@ -42,6 +47,7 @@ namespace CheckDNs___Conta_Corrente
                         if (i == 0)
                         {
                             verifingDN = actualDn[0];
+                            inicial = 0;
                         }
 
                         if (actualDn[0] == verifingDN)
@@ -52,13 +58,33 @@ namespace CheckDNs___Conta_Corrente
                         {
                             DNs.Add(verifingDN);
                             Quants.Add(actualQuant);
+                            final = i;  //define a linha final
+                            //Verificar se tem duplicada...
+                            for (int j = inicial; j < final; j++)
+                            {
+                                DnJ = allFile[j].Split('#');
+                                for (int k = inicial; k < final; k++)
+                                {
+                                    if(j == k) { k++; }
+                                    DnK = allFile[k].Split('#');
+                                    if (DnJ[0] + DnJ[1] + DnJ[2] + DnJ[3] + DnJ[4] + DnJ[12] == DnK[0] + DnK[1] + DnK[2] + DnK[3] + DnK[4] + DnK[12])
+                                    {
+                                        Duplicadas.Add($"Linha {j} duplicada com a linha {k}");
+                                    }
+                                }
+                            }
                             actualQuant = 1;
+                            inicial = final;
                         }
                         verifingDN = actualDn[0];                        
                     }
                     for (int i = 0;i < DNs.Count; i++)
                     {
                         dataGridView1.Rows.Add(DNs[i], Quants[i]);
+                    }
+                    foreach (string d in Duplicadas)
+                    {
+                        lblDuplicados.Text = d;
                     }
                 }
             }
