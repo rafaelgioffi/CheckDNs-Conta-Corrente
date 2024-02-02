@@ -13,60 +13,112 @@ namespace CheckDNs___Conta_Corrente
 {
     public partial class Form1 : Form
     {
-        string fileName;
-        string[] allFile = { };
-        string[] actualDn;
+        string fileNameTxt;
+        string fileNameCsv;
+        string[] allFileTxt = { };
+        string[] allFileCsv = { };
+        string[] actualDnTxt;
+        string[] actualDnCsv;
         string[] DnJ;
         string[] DnK;
         string verifingDN;
         int actualQuant = 0;
         int inicial = 0;
         int final = 0;
-        List<string> DNs = new List<string>();
-        List<int> Quants = new List<int>();
+        List<string> DNsTxt = new List<string>();
+        List<string> DNsCsv = new List<string>();
+        List<int> QuantsTxt = new List<int>();
+        List<int> QuantsCsv = new List<int>();
         List<string> Duplicadas = new List<string>();
         public Form1()
         {
             InitializeComponent();            
         }
 
-        private void btnCheck_Click(object sender, EventArgs e)
+        private void btnTxt_Click(object sender, EventArgs e)
         {
             opFile.ShowDialog();
-            fileName = opFile.FileName;
-            
+            fileNameTxt = opFile.FileName;
+
+            if(String.IsNullOrWhiteSpace(fileNameTxt))
+            {
+                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Regular);
+            }
+            else
+            {
+                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Italic);
+                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Bold);
+                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Underline);                                              
+            }
+        }
+        private void btnCsv_Click(object sender, EventArgs e)
+        {
+            opFile.ShowDialog();
+            fileNameCsv = opFile.FileName;
+
+            if(String.IsNullOrWhiteSpace(fileNameCsv))
+            {
+                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Regular);
+            }
+            else
+            {
+                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Italic);
+                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Bold);
+                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Underline);                                              
+            }
+
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(fileNameTxt) || String.IsNullOrWhiteSpace(fileNameCsv))
+            {
+                MessageBox.Show("Selecione o TXT e CSV primeiro.");
+                return;
+            }
+
             try
             {
-                if(File.Exists(fileName))
+                if (File.Exists(fileNameTxt) && File.Exists(fileNameCsv))
                 {
-                    allFile = File.ReadAllLines(fileName);
-                    
-                    for (int i = 0;i < allFile.Length; i++)
+                    allFileTxt = File.ReadAllLines(fileNameTxt);
+                    allFileCsv = File.ReadAllLines(fileNameCsv);
+
+                    for (int i = 0; i < allFileCsv.Length; i++)
                     {
-                        actualDn = allFile[i].Split('#');
+                        actualDnCsv = allFileCsv[i].Split(',');
+                        DNsCsv.Add(actualDnCsv[0]);
+                        int tempQuantCsv = 0;
+                        int.TryParse(actualDnCsv[1], out tempQuantCsv);
+                        QuantsCsv.Add(tempQuantCsv);
+                    }
+
+                    for (int i = 0; i < allFileTxt.Length; i++)
+                    {
+                        actualDnTxt = allFileTxt[i].Split('#');
                         if (i == 0)
                         {
-                            verifingDN = actualDn[0];
+                            verifingDN = actualDnTxt[0];
                             inicial = 0;
                         }
 
-                        if (actualDn[0] == verifingDN)
+                        if (actualDnTxt[0] == verifingDN)
                         {
                             actualQuant++;
                         }
                         else
                         {
-                            DNs.Add(verifingDN);
-                            Quants.Add(actualQuant);
+                            DNsTxt.Add(verifingDN);
+                            QuantsTxt.Add(actualQuant);
                             final = i;  //define a linha final
                             //Verificar se tem duplicada...
                             for (int j = inicial; j < final; j++)
                             {
-                                DnJ = allFile[j].Split('#');
+                                DnJ = allFileTxt[j].Split('#');
                                 for (int k = inicial; k < final; k++)
                                 {
-                                    if(j == k) { k++; }
-                                    DnK = allFile[k].Split('#');
+                                    if (j == k) { k++; }
+                                    DnK = allFileTxt[k].Split('#');
                                     if (DnJ[0] + DnJ[1] + DnJ[2] + DnJ[3] + DnJ[4] + DnJ[12] == DnK[0] + DnK[1] + DnK[2] + DnK[3] + DnK[4] + DnK[12])
                                     {
                                         Duplicadas.Add($"Linha {j} duplicada com a linha {k}");
@@ -76,23 +128,38 @@ namespace CheckDNs___Conta_Corrente
                             actualQuant = 1;
                             inicial = final;
                         }
-                        verifingDN = actualDn[0];                        
+                        verifingDN = actualDnTxt[0];
                     }
-                    for (int i = 0;i < DNs.Count; i++)
+
+                    for (int i = 0; i < DNsTxt.Count; i++)
                     {
-                        dataGridView1.Rows.Add(DNs[i], Quants[i]);
+                        int dntxt = int.Parse(DNsTxt[i]);
+                        int quanttxt = QuantsTxt[i];
+                        int dncsv = int.Parse(DNsCsv[i]);
+                        int quantcsv = QuantsCsv[i];
+
+                        dataGridView1.Rows.Add(dntxt, quanttxt, dncsv, quantcsv);
+                        if (dntxt == dncsv && quanttxt == quantcsv)
+                        {
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightGreen;
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;                                                        
+                        }
                     }
                     foreach (string d in Duplicadas)
                     {
                         lblDuplicados.Text = d;
                     }
                 }
+
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show($"Falha ao ler o arquivo.\n {ex.Message}");
             }
         }
 
-      
     }
 }
