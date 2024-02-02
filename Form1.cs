@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,14 +43,14 @@ namespace CheckDNs___Conta_Corrente
 
             if(String.IsNullOrWhiteSpace(fileNameTxt))
             {
-                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Regular);
+                btnTxt.BackColor = SystemColors.Control;
             }
             else
             {
                 btnTxt.Font = new Font(btnTxt.Font, FontStyle.Italic);
-                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Bold);
-                btnTxt.Font = new Font(btnTxt.Font, FontStyle.Underline);                                              
+                btnTxt.BackColor = SystemColors.GradientInactiveCaption;
             }
+            VerificaBotoes();
         }
         private void btnCsv_Click(object sender, EventArgs e)
         {
@@ -58,15 +59,25 @@ namespace CheckDNs___Conta_Corrente
 
             if(String.IsNullOrWhiteSpace(fileNameCsv))
             {
-                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Regular);
+                btnCsv.BackColor = SystemColors.Control;
             }
             else
             {
                 btnCsv.Font = new Font(btnCsv.Font, FontStyle.Italic);
-                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Bold);
-                btnCsv.Font = new Font(btnCsv.Font, FontStyle.Underline);                                              
+                btnCsv.BackColor = Color.Bisque;
             }
+            VerificaBotoes();
+        }
 
+        public void VerificaBotoes()
+        {
+            if(!String.IsNullOrWhiteSpace(fileNameTxt) && !String.IsNullOrWhiteSpace(fileNameCsv)) {
+                btnCheck.Enabled = true;
+            }
+            else
+            {
+                btnCheck.Enabled=false;
+            }
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
@@ -79,6 +90,12 @@ namespace CheckDNs___Conta_Corrente
 
             try
             {
+                dataGridView1.Rows.Clear();
+                DNsTxt.Clear();
+                DNsCsv.Clear();
+                QuantsTxt.Clear();
+                QuantsCsv.Clear();
+                lblDuplicados.Text = "";
                 if (File.Exists(fileNameTxt) && File.Exists(fileNameCsv))
                 {
                     allFileTxt = File.ReadAllLines(fileNameTxt);
@@ -145,7 +162,8 @@ namespace CheckDNs___Conta_Corrente
                         }
                         else
                         {
-                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;                                                        
+                            dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;
+                            lblDuplicados.Text += $"Divergências com o DN\t {dntxt}\n";                                                        
                         }
                     }
                     foreach (string d in Duplicadas)
