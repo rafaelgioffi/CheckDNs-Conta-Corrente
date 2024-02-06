@@ -124,7 +124,7 @@ namespace CheckDNs___Conta_Corrente
                         if (i == 0)
                         {
                             verifingDN = actualDnTxt[0];
-                            //inicial = 0;
+                            inicial = 0;
                         }
 
                         if (actualDnTxt[0] == verifingDN)
@@ -135,9 +135,9 @@ namespace CheckDNs___Conta_Corrente
                         {
                             DNsTxt.Add(verifingDN);
                             QuantsTxt.Add(actualQuant);
-                            //final = i;  //define a linha final
+                            final = i;  //define a linha final
                             //Verificar se tem duplicada...
-                            /*
+                            
                             for (int j = inicial; j < final; j++)
                             {
                                 DnJ = allFileTxt[j].Split('#');
@@ -151,9 +151,9 @@ namespace CheckDNs___Conta_Corrente
                                     }
                                 }
                             }
-                            */
+                            
                             actualQuant = 1;
-                            //inicial = final;
+                            inicial = final;
                         }
                         verifingDN = actualDnTxt[0];
                     }
@@ -178,7 +178,7 @@ namespace CheckDNs___Conta_Corrente
                     }
                     foreach (string d in Duplicadas)
                     {
-                        lblDuplicados.Text = d;
+                        lblDuplicados.Text += d + "\n";
                     }
                 }
 
