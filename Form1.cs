@@ -109,10 +109,12 @@ namespace CheckDNs___Conta_Corrente
 
                     for (int i = 0; i <= allFileTxt.Length; i++)
                     {
-                        if (i == allFileTxt.Length - 1 || i == allFileTxt.Length)
+                        if (i == allFileTxt.Length)
                         {
                             actualDnTxt = allFileTxt[i-1].Split('#');
                             verifingDN = actualDnTxt[0];
+                            DNsTxt.Add(verifingDN);
+                            QuantsTxt.Add(actualQuant);
                         }
                         else
                         {
@@ -122,7 +124,7 @@ namespace CheckDNs___Conta_Corrente
                         if (i == 0)
                         {
                             verifingDN = actualDnTxt[0];
-                            inicial = 0;
+                            //inicial = 0;
                         }
 
                         if (actualDnTxt[0] == verifingDN)
