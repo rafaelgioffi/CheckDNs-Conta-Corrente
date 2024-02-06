@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CheckDNs___Conta_Corrente
@@ -33,7 +27,7 @@ namespace CheckDNs___Conta_Corrente
         List<string> Duplicadas = new List<string>();
         public Form1()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void btnTxt_Click(object sender, EventArgs e)
@@ -41,7 +35,7 @@ namespace CheckDNs___Conta_Corrente
             opFile.ShowDialog();
             fileNameTxt = opFile.FileName;
 
-            if(String.IsNullOrWhiteSpace(fileNameTxt))
+            if (String.IsNullOrWhiteSpace(fileNameTxt))
             {
                 btnTxt.BackColor = SystemColors.Control;
             }
@@ -57,7 +51,7 @@ namespace CheckDNs___Conta_Corrente
             opFile.ShowDialog();
             fileNameCsv = opFile.FileName;
 
-            if(String.IsNullOrWhiteSpace(fileNameCsv))
+            if (String.IsNullOrWhiteSpace(fileNameCsv))
             {
                 btnCsv.BackColor = SystemColors.Control;
             }
@@ -71,17 +65,20 @@ namespace CheckDNs___Conta_Corrente
 
         public void VerificaBotoes()
         {
-            if(!String.IsNullOrWhiteSpace(fileNameTxt) && !String.IsNullOrWhiteSpace(fileNameCsv)) {
+            if (!String.IsNullOrWhiteSpace(fileNameTxt) && !String.IsNullOrWhiteSpace(fileNameCsv))
+            {
                 btnCheck.Enabled = true;
             }
             else
             {
-                btnCheck.Enabled=false;
+                btnCheck.Enabled = false;
             }
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            btnCheck.Enabled = false;
+            btnCheck.Text = "Verificando...";
             if (String.IsNullOrWhiteSpace(fileNameTxt) || String.IsNullOrWhiteSpace(fileNameCsv))
             {
                 MessageBox.Show("Selecione o TXT e CSV primeiro.");
@@ -110,9 +107,18 @@ namespace CheckDNs___Conta_Corrente
                         QuantsCsv.Add(tempQuantCsv);
                     }
 
-                    for (int i = 0; i < allFileTxt.Length; i++)
+                    for (int i = 0; i <= allFileTxt.Length; i++)
                     {
-                        actualDnTxt = allFileTxt[i].Split('#');
+                        if (i == allFileTxt.Length - 1 || i == allFileTxt.Length)
+                        {
+                            actualDnTxt = allFileTxt[i-1].Split('#');
+                            verifingDN = actualDnTxt[0];
+                        }
+                        else
+                        {
+                            actualDnTxt = allFileTxt[i].Split('#');
+                        }
+
                         if (i == 0)
                         {
                             verifingDN = actualDnTxt[0];
@@ -127,8 +133,9 @@ namespace CheckDNs___Conta_Corrente
                         {
                             DNsTxt.Add(verifingDN);
                             QuantsTxt.Add(actualQuant);
-                            final = i;  //define a linha final
+                            //final = i;  //define a linha final
                             //Verificar se tem duplicada...
+                            /*
                             for (int j = inicial; j < final; j++)
                             {
                                 DnJ = allFileTxt[j].Split('#');
@@ -142,8 +149,9 @@ namespace CheckDNs___Conta_Corrente
                                     }
                                 }
                             }
+                            */
                             actualQuant = 1;
-                            inicial = final;
+                            //inicial = final;
                         }
                         verifingDN = actualDnTxt[0];
                     }
@@ -163,7 +171,7 @@ namespace CheckDNs___Conta_Corrente
                         else
                         {
                             dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightSalmon;
-                            lblDuplicados.Text += $"Divergências com o DN\t {dntxt}\n";                                                        
+                            lblDuplicados.Text += $"Divergências com o DN\t {dntxt}\n";
                         }
                     }
                     foreach (string d in Duplicadas)
@@ -177,6 +185,8 @@ namespace CheckDNs___Conta_Corrente
             {
                 MessageBox.Show($"Falha ao ler o arquivo.\n {ex.Message}");
             }
+            btnCheck.Enabled = true;
+            btnCheck.Text = "Verificar";
         }
 
     }
